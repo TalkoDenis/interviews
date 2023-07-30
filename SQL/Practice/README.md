@@ -104,8 +104,11 @@ WHERE trip_no IN (
 <details>
 <summary>Ответ</summary>
 Harrison Ford
+	
 Michael Caine
+
 Mullah Omar
+
 Steve Martin
 </details>
 
@@ -130,8 +133,11 @@ ORDER BY town_to
 <details>
 <summary>Ответ</summary>
 London
+	
 Paris
+
 Rostov
+
 Singapore
 </details>
 
@@ -259,15 +265,22 @@ WHERE cnt > 1
 Bruce Willis
 </details>
 
-#### Задание 
+#### Задание 8
 
---
+Вывести имена пассажиров, кто ни разу никуда не летал. Имена отсортировать в алфавитном порядке.
 
 <details>
 <summary>Решение</summary>
 
 ```
-
+SELECT
+	name
+FROM passenger
+WHERE id_psg NOT IN (
+					SELECT
+						DISTINCT id_psg
+					FROM pass_in_trip )
+ORDER BY name
 ```
 
 </details>
@@ -275,7 +288,28 @@ Bruce Willis
 
 <details>
 <summary>Ответ</summary>
-
+	
+| name |
+| ------------- | 
+| Angelina Jolie |
+| Antonio Banderas |
+| Brad Pitt |
+| Bruce Willis |
+| Catherine Zeta-Jones |
+| Clint Eastwood |
+| Donald Sutherland |
+| Gary Oldman |
+| John Travolta |
+| Johnny Depp |
+| Kim Basinger |
+| Mel Gibson |
+| Michael Douglas |
+| Pierce Brosnan |
+| Sam Neill |
+| Samuel L. Jackson |
+| Sean Connery |
+| Sylvester Stallone |
+| Tommy Lee Jones |
 </details>
 
 #### Задание 
