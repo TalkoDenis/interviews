@@ -1,7 +1,7 @@
 # interviews
 
 
-### SQL
+### [SQL](https://github.com/TalkoDenis/interviews/tree/main/SQL)
 
 
 
