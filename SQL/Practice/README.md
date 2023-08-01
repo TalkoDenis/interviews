@@ -315,6 +315,79 @@ ORDER BY name
 | Tommy Lee Jones |
 </details>
 
+#### Задание 9
+
+Кто из пассажиров заплатил за перелёт больше всего?
+Если таких несколько, выведите сперва сумму билетов потом имена пассажиров от большего значения к меньшему.
+В итоговом ответе должны быть только сумма билета и имя.
+
+<details>
+<summary>Решение</summary>
+
+```
+SELECT
+	price
+	, name
+FROM price AS p
+JOIN pass_in_trip AS pit
+	ON p.trip_no = pit.trip_no
+JOIN passenger as psg
+	ON pit.id_psg = psg.id_psg
+WHERE price = (SELECT MAX(price) from price)
+ORDER BY
+	price DESC
+	, name DESC
+```
+
+</details>
+
+<details>
+<summary>Ответ</summary>
+	
+| price | name |
+| ------------- | ------------- | 
+| 3900 | Mullah Omar |
+</details>
+
+#### Задание 10
+
+--
+
+<details>
+<summary>Решение</summary>
+
+```
+
+```
+
+</details>
+
+<details>
+<summary>Ответ</summary>
+	
+
+</details>
+
+
+#### Задание 
+
+--
+
+<details>
+<summary>Решение</summary>
+
+```
+
+```
+
+</details>
+
+<details>
+<summary>Ответ</summary>
+	
+
+</details>
+
 ### Задания посложнее
 
 #### Задание 
