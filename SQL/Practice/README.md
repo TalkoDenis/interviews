@@ -72,9 +72,10 @@ CREATE TABLE Price (
 	price int NOT NULL 
 )
 ;
+```
 
 </details>
-```
+
 
 <details>
 <summary>Загрузка данных в таблицы</summary>
@@ -463,7 +464,10 @@ WHERE cnt > 1
 
 <details>
 <summary>Ответ</summary>
-Bruce Willis
+
+| name  |
+| ------------- |
+| Bruce Willis |
 </details>
 
 #### Задание 8
