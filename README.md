@@ -36,7 +36,7 @@
 
 
 
-### A/B-тесты
+### [A/B-тесты](https://github.com/TalkoDenis/interviews/tree/main/ab_testing)
 
 
 
