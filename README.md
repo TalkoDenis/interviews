@@ -21,7 +21,7 @@
 
 
 
-### Статистика
+### [Статистика](https://github.com/TalkoDenis/interviews/tree/main/Statistics)
 
 
 
@@ -36,7 +36,7 @@
 
 
 
-### ML
+### A/B-тесты
 
 
 
