@@ -26,3 +26,17 @@ a = np.array([i for i in range(100)])
 p = np.percentile(a, 50) # Возвращает 50-ый перцентиль - медиану
 print(p)
 </details>
+
+#### Как объединить два массива?
+<details>
+<summary>Ответ</summary>
+Для объединения массивов нужно использовать соответствующую функцию Numpy:
+
+import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+np.concatenate((a,b))
+#=> array([1, 2, 3, 4, 5, 6])
+</details>
