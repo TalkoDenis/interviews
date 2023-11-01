@@ -49,3 +49,32 @@ np.concatenate((a,b))
 
 
 </details>
+
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
+
+
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
+
+
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
