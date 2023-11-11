@@ -305,6 +305,290 @@ array([ 5. , 10. ,  7.5, 2.5, 0. ])
 </details>
 
 
+#### ndarray.ndim
+<details>
+<summary>Ответ</summary>
+Возвращает количество измерений массива.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.ndim)
+Вывод кода сверху будет 2, поскольку «a» — это 2-мерный массив.
+
+
+</details>
+
+
+#### ndarray.shape
+<details>
+<summary>Ответ</summary>
+Возвращает кортеж размера массива, то есть (n,m), где n — это количество строк, а m — количество колонок.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.shape)
+Вывод кода — (2,3), то есть 2 строки и 3 колонки.
+
+
+</details>
+
+#### ndarray.size
+<details>
+<summary>Ответ</summary>
+Возвращает общее количество элементов в массиве.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.size)
+Вывод — 6, потому что 2 х 3.
+
+
+</details>
+
+
+#### ndarray.dtype
+<details>
+<summary>Ответ</summary>
+Возвращает объект, описывающий тип элементов в массиве.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.dtype)
+Вывод — «int32», поскольку это 32-битное целое число.
+Можно явно определить тип данных массива NumPy.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]], dtype = float)
+print(a.dtype)
+Этот код вернет float64, потому что это 64-битное число с плавающей точкой.
+
+
+</details>
+
+
+#### ndarray.itemsize
+<details>
+<summary>Ответ</summary>
+Возвращает размер каждого элемента в массиве в байтах.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.itemsize)
+Вывод — 4, потому что 32/8.
+
+
+</details>
+
+
+#### ndarray.data
+<details>
+<summary>Ответ</summary>
+Возвращает буфер с актуальными элементами массива. Это альтернативный способ получения доступа к элементам через их индексы.
+
+import numpy as np
+a = np.array([[1,2,3],[4,5,6]])
+print(a.data)
+Этот код вернет список элементов.
+
+
+</details>
+
+
+#### ndarray.sum()
+<details>
+<summary>Ответ</summary>
+Функция вернет сумму все элементов ndarray.
+
+import numpy as np
+a = np.random.random((2,3))
+print(a)
+print(a.sum())
+Сгенерированная в этом примере матрица — [[0.46541517 0.66668157 0.36277909] [0.7115755 0.57306008 0.64267163]], следовательно код вернет 3.422183052180838. Поскольку используется генератор случайных чисел, ваш результат будет отличаться.
+
+
+
+
+</details>
+
+
+#### ndarray.min()
+<details>
+<summary>Ответ</summary>
+Функция вернет элемент с минимальным значением из ndarray.
+
+import numpy as np
+a = np.random.random((2,3))
+print(a.min())
+Сгенерированная в этом примере матрица — [[0.46541517 0.66668157 0.36277909] [0.7115755 0.57306008 0.64267163]], следовательно код вернет 0.36277909. Поскольку используется генератор случайных чисел, ваш результат будет отличаться.
+
+
+</details>
+
+
+#### ndarray.max()
+<details>
+<summary>Ответ</summary>
+Функция вернет элемент с максимальным значением из ndarray.
+
+import numpy as np
+a = np.random.random((2,3))
+print(a.min())
+Сгенерированная в этом примере матрица — [[0.46541517 0.66668157 0.36277909] [0.7115755 0.57306008 0.64267163]], следовательно код вернет 0.7115755. Поскольку используется генератор случайных чисел, ваш результат будет отличаться
+
+
+</details>
+
+
+#### numpy.zeroes()
+<details>
+<summary>Ответ</summary>
+numpy.zeros((rows, columns), dtype)
+Эта функция создаст массив numpy с заданным количеством измерений, где каждый элемент будет равняться 0. Если dtype не указан, по умолчанию будет использоваться dtype.
+
+import numpy as np
+np.zeros((3,3))
+print(a)
+Код вернет массив numpy 3×3, где каждый элемент равен 0.
+
+
+</details>
+
+
+#### numpy.ones()
+<details>
+<summary>Ответ</summary>
+numpy.ones((rows,columns), dtype)
+Эта функция создаст массив numpy с заданным количеством измерений, где каждый элемент будет равняться 1. Если dtype не указан, по умолчанию будет использоваться dtype.
+
+import numpy as np
+np.ones((3,3))
+print(a)
+Код вернет массив numpy 3 x 3, где каждый элемент равен 1.
+
+
+</details>
+
+
+#### numpy.empty()
+<details>
+<summary>Ответ</summary>
+numpy.empty((rows,columns))
+Эта функция создаст массив, содержимое которого будет случайным — оно зависит от состояния памяти.
+
+import numpy as np
+np.empty((3,3))
+print(a)
+Код вернет массив numpy 3×3, где каждый элемент будет случайным.
+
+
+</details>
+
+#### numpy.arrange()
+<details>
+<summary>Ответ</summary>
+numpy.arrange(start, stop, step)
+Эта функция используется для создания массива numpy, элементы которого лежат в диапазоне значений от start до stop с разницей равной step.
+
+import numpy as np
+a=np.arange(5,25,4)
+print(a)
+Вывод этого кода — [5 9 13 17 21]
+
+
+</details>
+
+#### numpy.linspace()
+<details>
+<summary>Ответ</summary>
+numpy.linspace(start, stop, num_of_elements)
+Эта функция создаст массив numpy, элементы которого лежат в диапазоне значений между start до stop, а num_of_elements — это размер массива. Тип по умолчанию — float64.
+
+import numpy as np
+a=np.linspace(5,25,5)
+print(a)
+Вывод — [5 10 15 20 25].
+
+
+
+
+</details>
+
+#### numpy.logspace()
+<details>
+<summary>Ответ</summary>
+numpy.logspace(start, stop, num_of_elements)
+Эта функция используется для создания массива numpy, элементы которого лежат в диапазоне значений от start до stop, а num_of_elements — это размер массива. Тип по умолчанию — float64. Все элементы находятся в пределах логарифмической шкалы, то есть представляют собой логарифмы соответствующих элементов.
+
+import numpy as np
+a = np.logspace(5,25,5)
+print(a)
+Вывод — [1.e+05 1.e+10 1.e+15 1.e+20 1.e+25]
+
+
+</details>
+
+#### numpy.sin()
+<details>
+<summary>Ответ</summary>
+numpy.sin(numpy.ndarray)
+Этот код вернет синус параметра.
+
+import numpy as np
+a = np.logspace(5,25,2)
+print(np.sin(a))
+Вывод кода сверху равен [0.0357488 -0.3052578]. Также есть cos(), tan() и так далее.
+
+
+</details>
+
+#### numpy.reshape()
+<details>
+<summary>Ответ</summary>
+numpy.reshape(dimensions)
+Эта функция используется для изменения количества измерений массива numpy. От количества аргументов в reshape зависит, сколько измерений будет в массиве numpy.
+import numpy as np
+a = np.arange(9).reshape(3,3)
+print(a)
+Вывод этого года — 2-мерный массив 3×3.
+
+</details>
+
+#### numpy.random.random()
+<details>
+<summary>Ответ</summary>
+numpy.random.random((rows, column))
+Эта функция возвращает массив с заданным количеством измерений, где каждый элемент генерируется случайным образом.
+
+a = np.random.random((2,2))
+Этот код вернет ndarray 2×2.
+
+
+</details>
+
+#### numpy.exp()
+<details>
+<summary>Ответ</summary>
+numpy.exp(numpy.ndarray)
+Функция вернет ndarray с экспоненциальной величиной каждого элемента.
+
+b = np.exp([10])
+Значением кода выше будет 22025.4657948
+
+
+</details>
+
+#### numpy.sqrt()
+<details>
+<summary>Ответ</summary>
+numpy.sqrt(numpy.ndarray)
+Эта функция вернет ndarray с квадратным корнем каждого элемента.
+
+b = np.sqrt([16])
+Этот код вернет значение 4.
+
+
+</details>
+
 #### 
 <details>
 <summary>Ответ</summary>
@@ -313,6 +597,37 @@ array([ 5. , 10. ,  7.5, 2.5, 0. ])
 
 </details>
 
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
+
+#### 
+<details>
+<summary>Ответ</summary>
+
+
+
+</details>
 
 #### 
 <details>
