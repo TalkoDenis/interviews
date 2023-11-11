@@ -589,6 +589,11 @@ b = np.sqrt([16])
 
 </details>
 
+https://habr.com/ru/articles/352678/
+
+https://habr.com/ru/articles/768188/
+
+
 #### 
 <details>
 <summary>Ответ</summary>
