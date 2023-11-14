@@ -1,6 +1,7 @@
 
 
 Напишем свой класс
+```
 class Bus
   def initialize(params)
     # переменная с @ - переменная класса
@@ -23,6 +24,7 @@ class Bus
 end
 
 Bus.new(color: 'red', wheels_radius: 18)
+```
 Доступ к атрибутам экземпляра класса
 bus = Bus.new(color: 'red', wheels_radius: 18)
 # bus.color  undefined method `color'
