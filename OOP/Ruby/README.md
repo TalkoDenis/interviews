@@ -25,7 +25,10 @@ end
 
 Bus.new(color: 'red', wheels_radius: 18)
 ```
-Доступ к атрибутам экземпляра класса
+
+#### Доступ к атрибутам экземпляра класса
+
+```
 bus = Bus.new(color: 'red', wheels_radius: 18)
 # bus.color  undefined method `color'
 bus.color = 'green'
@@ -86,7 +89,11 @@ end
 bus = Bus.new(color: 'red', wheels_radius: 18)
 bus.color
 bus.color = 'green'
-Методы класса
+```
+
+#### Методы класса
+
+```
 class Bus
   def self.bus?
     true
@@ -94,7 +101,11 @@ class Bus
 end
 
 Bus.bus? # true
-Разграничение доступа к методам
+```
+
+#### Разграничение доступа к методам
+
+```
 class Bus
   # Геттеры и сеттеры
   attr_accessor :color, :doors_number, :type, :wheels_number, :wheels_radius
@@ -138,7 +149,11 @@ bus = Bus.new(color: 'red', wheels_radius: 18)
 bus.print_string
 bus.bus_string(bus)
 bus.bus_string_of(bus)
-Алиасы
+```
+
+#### Алиасы
+
+```
 class Bus
   attr_accessor :color
 
@@ -181,7 +196,11 @@ end
 bus = Bus.new(color: 'red', wheels_radius: 18)
 bus.to_s
 bus.to_string
-Наследование
+```
+
+#### Наследование
+
+```
 class Bus
   attr_accessor :color
 
@@ -255,7 +274,11 @@ class OfficeBus < Bus
 end
 
 OfficeBus.new(color: 'red', wheels_radius: '18', people_place: true).to_s
-Модули
+```
+
+#### Модули
+
+```
 # include
 
 module Colorful
@@ -345,7 +368,10 @@ class Bus
 end
 
 Bus.colorized?
-Вызовы классов и модулей
+```
+#### Вызовы классов и модулей
+
+```
 # Короткая запись - Books::HarryPotter.glasses
 module Books
   module HarryPotter
@@ -372,7 +398,7 @@ end
 
 # Стараемся использовать отдельный файл для каждого класса
 # Один модуль - один файл
-
+```
 
 https://ru.hexlet.io/courses/ruby-basics/lessons/oop/theory_unit
 
