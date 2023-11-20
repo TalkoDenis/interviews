@@ -687,3 +687,18 @@ FROM Products
 WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity > 99)
 ```
 </details>
+
+#### 47. Для чего используются EXPLAIN?
+<details>
+<summary>Ответ</summary>
+  
+EXPLAIN используется чтобы пояснить, что происходит, когда выполняется запрос.
+Эта информация позволяет обнаружить медленные запросы и сократить время, затрачиваемое на обработку запроса.
+
+Синтаксис EXPLAIN
+
+```
+EXPLAIN SELECT * FROM table
+
+```
+</details>
