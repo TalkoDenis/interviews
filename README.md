@@ -28,7 +28,7 @@
 
 
 
-### Алгоритмы
+### [Алгоритмы](https://github.com/TalkoDenis/interviews/tree/main/Algorithms)
 
 
 
