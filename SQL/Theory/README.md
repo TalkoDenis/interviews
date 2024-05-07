@@ -702,3 +702,47 @@ EXPLAIN SELECT * FROM table
 
 ```
 </details>
+
+#### 48. Есть таблица вида:
+
+| Col_1 | Col_2 |
+|----------|----------|
+| 1 | 1 |
+| 1 | 1 |
+| 1 | 1 |
+| NULL | 1 |
+
+Какое число выведет следующий код:
+
+```
+SELECT COUNT(*) FROM table AS t1 JOIN table AS t2 ON t1.Col_1 = t2.Col_2;
+```
+
+<details>
+<summary>Ответ</summary>
+
+  12
+
+</details>
+
+#### 49. Есть таблица вида:
+
+| Col_1 | Col_2 |
+|----------|----------|
+| 1 | 1 |
+| 1 | 1 |
+| 1 | 1 |
+| NULL | 1 |
+
+Какое число выведет следующий код:
+
+```
+SELECT COUNT(*) FROM table AS t1 LEFT JOIN table AS t2 ON t1.Col_1 = t2.Col_2;
+```
+
+<details>
+<summary>Ответ</summary>
+
+  13
+
+</details>
