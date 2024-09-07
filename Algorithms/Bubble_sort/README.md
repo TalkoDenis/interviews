@@ -25,15 +25,12 @@ _Пузырьковая сортировка (или иногда называю
 
 ```
 def bubble_sort(nums):  
-    # swapped установлен в True, чтобы цикл запустился хотя бы один раз
     swapped = True
     while swapped:
         swapped = False
         for i in range(len(nums) - 1):
             if nums[i] > nums[i + 1]:
-                # Элементы меняются местами
                 nums[i], nums[i + 1] = nums[i + 1], nums[i]
-                # Устанавливаем swapped в True для следующей итерации
                 swapped = True
     return nums
 ```
@@ -45,17 +42,13 @@ def bubble_sort(nums):
 
 ```
 def bubble_sort(nums)
-    # swapped установлен в true, чтобы цикл запустился хотя бы один раз
     swapped = true
-    # определяется размер списка
     nums_length = nums.size
     while swapped
         swapped = false
         (nums_length - 1).times do |i|
             if nums[i] > nums[i + 1]
-                # Элементы меняются местами
                 nums[i], nums[i + 1] = nums[i + 1], nums[i]
-                # Устанавливаем swapped в True для следующей итерации
                 swapped = true
             end
         end
@@ -71,7 +64,6 @@ end
 
 ```
 bubble_sort <- function(nums) {
-  # swapped установлен в TRUE, чтобы цикл запустился хотя бы один раз
   swapped <- TRUE
   
   while (swapped) {
@@ -79,12 +71,10 @@ bubble_sort <- function(nums) {
     
     for (i in 1:(length(nums) - 1)) {
       if (nums[i] > nums[i + 1]) {
-        # Элементы меняются местами
         temp <- nums[i]
         nums[i] <- nums[i + 1]
         nums[i + 1] <- temp
         
-        # Устанавливаем swapped в TRUE для следующей итерации
         swapped <- TRUE
       }
     }
@@ -92,6 +82,26 @@ bubble_sort <- function(nums) {
   
   return(nums)
 }
+```
+
+</details>
+
+<details>
+<summary>Реализация на Julia</summary>
+
+```
+function bubble_sort!(arr)
+    n = length(arr)
+    for i in 1:n-1
+        for j in 1:n-i
+            if arr[j] > arr[j+1]
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+            end
+        end
+    end
+    return arr
+end
+
 ```
 
 </details>
