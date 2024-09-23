@@ -350,3 +350,259 @@ End Date: Опциональная дата и время, после котор
 Interval: Расписание, по которому DAG должен выполняться (например, ежедневно, каждые пять минут и т.д.).
 
 
+
+
+
+
+Переменные, подключения и XCom
+
+В Apache Airflow переменные, подключения и XCom являются важными концепциями для управления конфигурацией, подключениями к внешним источникам данных и обмена данными между задачами в рамках рабочего процесса.
+
+Переменные (Variables): Переменные в Airflow представляют собой ключ-значение пары, которые могут быть использованы для хранения конфигурационных данных и параметров, доступных в вашем рабочем процессе. Некоторые примеры использования переменных могут включать настройки подключения к базе данных, настройки авторизации и другие параметры, которые могут меняться в зависимости от окружения выполнения. Переменные можно определить и настроить через веб-интерфейс Airflow или использовать API для программного управления ими. Для доступа к переменным в коде задачи вы можете использовать объект Variable модуля airflow.models.
+
+Подключения (Connections): Подключения в Airflow представляют собой параметры, необходимые для установки связи с внешними источниками данных, такими как базы данных, сервисы облачных провайдеров, API и другие ресурсы. Эти параметры, такие как хост, порт, имя пользователя, пароль и другие, могут быть настроены и управляются в веб-интерфейсе Airflow или через API. Подключения в Airflow могут быть использованы в коде задач для установки соединения с внешними источниками данных. Для доступа к подключениям в коде задачи вы можете использовать объект Connection модуля airflow.hooks.base.
+
+XCom: XCom (Cross Communication) в Airflow представляет собой механизм обмена данными между задачами внутри рабочего процесса. XCom позволяет передавать и получать данные между задачами в виде ключ-значение пары. Это может быть полезно, когда вам нужно передать результат выполнения одной задачи в другую задачу для дальнейшей обработки. Задачи могут читать и записывать XCom значения с использованием методов xcom_pull() и xcom_push() соответственно. Для доступа к XCom значениям в коде задачи вы можете использовать объект context (контекст выполнения) и методы модуля airflow.models.
+
+Важно отметить, что переменные, подключения и XCom в Airflow являются частями метаданных и хранятся в базе данных метаданных Airflow. Это обеспечивает централизованное управление и доступ к этим данным в рамках вашего рабочего процесса.
+
+ 
+
+Переменные
+
+В Apache Airflow переменные можно создать через веб-интерфейс Airflow или с использованием API. Вот примеры создания переменных с использованием обоих подходов:
+
+1. Создание переменных через веб-интерфейс Airflow:
+
+Перейдите в веб-интерфейс Airflow ( доступен по адресу http://localhost:8080).
+В меню выберите «Admin» и затем «Variables».
+Нажмите кнопку «Create» или «Add Variable».
+Введите имя переменной (Key) и значение переменной (Value).
+Нажмите кнопку «Save» или «Add».
+2. Создание переменных с использованием API: Вы также можете использовать API для программного создания переменных. Вот пример использования API Python для создания переменной:
+
+import requests
+
+# URL для создания переменной
+url = 'http://localhost:8080/api/v1/variables'
+
+# Параметры запроса
+headers = {'Content-Type': 'application/json'}
+data = {
+    'key': 'my_variable',
+    'value': 'my_value'
+}
+
+# Отправка POST-запроса для создания переменной
+response = requests.post(url, headers=headers, json=data)
+
+# Проверка статуса ответа
+if response.status_code == 200:
+    print('Переменная успешно создана')
+else:
+    print('Ошибка при создании переменной:', response.status_code)
+В этом примере мы отправляем POST-запрос на URL /api/v1/variables с указанием имени переменной (Key) и ее значения (Value) в формате JSON. Если ответ имеет код состояния 200, значит переменная была успешно создана.
+
+Когда переменная создана, вы можете использовать ее в коде ваших задач с помощью объекта Variable модуля airflow.models. Вот пример использования переменной в коде -  в этом примере мы получаем значение переменной с помощью Variable.get() и выводим его в задаче с помощью функции my_task().:
+
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from airflow.models import Variable
+from datetime import datetime
+
+def my_task():
+    my_variable = Variable.get("my_variable")
+    print(my_variable)
+
+with DAG('my_dag', schedule_interval='@daily', start_date=datetime(2024, 1, 1)) as dag:
+    task = PythonOperator(task_id='my_task', python_callable=my_task)
+
+
+
+
+
+Подключения
+
+В Apache Airflow подключения можно создавать как через веб-интерфейс Airflow, так и с использованием API. Вот примеры создания подключений с использованием обоих подходов:
+
+1. Создание подключений через веб-интерфейс Airflow:
+
+Перейдите в веб-интерфейс Airflow ( доступен по адресу http://localhost:8080).
+В меню выберите «Admin» и затем «Connections».
+Нажмите кнопку «Create» или «Add Connection».
+Заполните поля для подключения, такие как Conn Id (идентификатор подключения), Conn Type (тип подключения), Host, Port, Login, Password и другие, в зависимости от типа подключения.
+Нажмите кнопку «Save» или «Add».
+2. Создание подключений с использованием API: Вы также можете использовать API для программного создания подключений. Вот пример использования API Python для создания подключения к базе данных PostgreSQL:
+
+import requests
+
+# URL для создания подключения
+url = 'http://localhost:8080/api/v1/connections'
+
+# Параметры запроса
+headers = {'Content-Type': 'application/json'}
+data = {
+    'conn_id': 'my_postgres_conn',
+    'conn_type': 'postgres',
+    'host': 'localhost',
+    'port': '5432',
+    'login': 'my_user',
+    'password': 'my_password',
+    'schema': 'my_schema'
+}
+
+# Отправка POST-запроса для создания подключения
+response = requests.post(url, headers=headers, json=data)
+
+# Проверка статуса ответа
+if response.status_code == 200:
+    print('Подключение успешно создано')
+else:
+    print('Ошибка при создании подключения:', response.status_code)
+В этом примере мы отправляем POST-запрос на URL /api/v1/connections с указанием параметров подключения в формате JSON. Если ответ имеет код состояния 200, значит подключение было успешно создано.
+
+Когда подключение создано, вы можете использовать его в коде ваших задач с помощью объекта Connection модуля airflow.hooks.base. Вот пример использования подключения в коде:
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.hooks.base_hook import BaseHook
+from datetime import datetime
+
+def my_task():
+    my_conn = BaseHook.get_connection("my_postgres_conn")
+    print(f"Host: {my_conn.host}")
+    print(f"Login: {my_conn.login}")
+
+with DAG('my_dag', schedule_interval='@daily', start_date=datetime(2024, 1, 1)) as dag:
+    task = PythonOperator(task_id='my_task', python_callable=my_task)
+В этом примере мы получаем подключение с помощью BaseHook.get_connection() и выводим некоторые параметры подключения в задаче с помощью функции my_task(). 
+
+
+
+
+
+
+Теперь хотелось продемонстрировать, как выглядят переменные и подключения и как можно автоматизировать их добавление c помощью DAG.
+
+МЫ уже определились, что variables и connections по сути своей пары "ключ-значение". Получается что мы сможем сохранить из в соответствующем файле. Как вы можете помнить это JSON.
+
+Для примера возьмем ситуацию, где нам необходимо в процессе выполнения DAG использовать подключение к базе данных PostgreSQL. Для этого мы создаем файл connections.json в таком виде:
+
+{
+  "conn1": {
+    "conn_type": "postgres",
+    "description": "Подключение к базе данных",
+    "login": "postgres",
+    "password": "password",
+    "host": "host.docker.internal",
+    "port": 5430,
+    "schema": "test",
+    "extra": "{}"
+ }
+}
+А также в процессе нашей задачи требуется использовать какие-то значения, которые негоже писать прям в коде (API ключи, какие-то параметры, подключения те же именовать). Для этого мы создадим файл variables.json в таком виде:
+
+{
+    "base_url": "https://www.тут-нужная-вам-ссылка.co/query",
+    "conn_name": "conn1",
+    "function": "TIME_SERIES_INTRADAY",
+    "interval": "15min",
+    "symbol_apple": "AAPL",
+    "apikey": "----------",
+    "outputsize": "full"
+    
+}
+ Отлично! Теперь давайте создадим DAG который назовем init, который будет добавлять наши переменные и подключения в Airflow автоматически, при помощи bash-оператора:
+
+from datetime import datetime, timedelta, date
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.empty import EmptyOperator
+from airflow.utils.task_group import TaskGroup
+
+# аргументы дага по умолчанию
+default_args = {
+    "owner": "user",
+    "retries": 0,
+    "start_date": datetime.today()
+}
+
+# функция добавления переменных в airflow
+
+with DAG(dag_id="01_init",description = 'Прикручиваем connections и variables', default_args=default_args, schedule_interval='@once', catchup=False) as dag:
+
+    start = EmptyOperator(task_id='start')
+
+    with TaskGroup("01_init", tooltip="Добавление connections") as init_tg:
+
+        # ****************** добавление переменных ***********************
+
+        set_variables = BashOperator(
+            task_id = 'set_variables',
+            bash_command='airflow variables import /opt/airflow/dags/variables.json'
+        )
+
+        # ****************** добавление connecions ***********************
+
+        set_connections = BashOperator(
+            task_id='set_connections',
+            bash_command='airflow connections import /opt/airflow/dags/connections.json'
+        )
+
+    end = EmptyOperator(task_id='end')
+
+    start >> init_tg >> end
+
+Вуаля! 
+
+
+
+
+
+XComs (Cross-Communication)
+XComs, или механизм кросс-коммуникации, позволяет задачам в Airflow обмениваться сообщениями или данными между собой. Каждая задача может "вытолкнуть" сообщение в XCom с помощью метода xcom_push, и другие задачи могут "вытянуть" это сообщение с помощью метода xcom_pull.
+
+Это особенно полезно в сценариях, где результат выполнения одной задачи требуется для начала выполнения другой. Например, задача, которая обрабатывает данные, может передать результаты другой задаче, которая использует эти данные для обновления базы данных или отправки уведомлений.
+
+XComs хранятся в базе данных Airflow, что делает этот механизм надежным и эффективным для управления данными между задачами.
+
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from datetime import datetime
+
+def push_data(**context):
+    context['ti'].xcom_push(key='my_data', value='Hello, Airflow!')
+
+def process_data(**context):
+    my_data = context['ti'].xcom_pull(key='my_data')
+    print(my_data)
+
+with DAG('xcom_example_dag', schedule_interval='@daily', start_date=datetime(2024, 1, 1)) as dag:
+    push_task = PythonOperator(
+        task_id='push_task',
+        python_callable=push_data,
+        provide_context=True
+    )
+
+    process_task = PythonOperator(
+        task_id='process_task',
+        python_callable=process_data,
+        provide_context=True
+    )
+
+    push_task >> process_task
+ 
+
+В этом примере у нас есть две задачи: push_task и process_task.
+
+В задаче push_task мы определяем функцию push_data(), которая отправляет данные 'Hello, Airflow!' в XCom с помощью метода xcom_push(). Мы используем аргумент **context, чтобы получить доступ к контексту выполнения задачи, и вызываем context['ti'].xcom_push() для отправки данных в XCom. Мы указываем ключ 'my_data' и значение 'Hello, Airflow!'.
+
+В задаче process_task мы определяем функцию process_data(), которая получает данные из XCom с помощью метода xcom_pull(). Мы снова используем аргумент **context, чтобы получить доступ к контексту выполнения задачи, и вызываем context['ti'].xcom_pull() с ключом 'my_data', чтобы получить данные из XCom. Затем мы просто выводим полученные данные.
+
+Затем мы связываем задачи push_task и process_task с помощью оператора >>, чтобы определить порядок их выполнения.
+
+При выполнении этого DAG задача push_task сначала отправляет данные в XCom, а затем задача process_task получает эти данные из XCom и выводит их.
+
+
+
+
