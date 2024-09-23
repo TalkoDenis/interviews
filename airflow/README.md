@@ -606,3 +606,75 @@ with DAG('xcom_example_dag', schedule_interval='@daily', start_date=datetime(202
 
 
 
+В Apache Airflow сенсоры (Sensors) используются для мониторинга определенных условий или событий и ожидания, пока эти условия не будут выполнены. Сенсоры позволяют вам создавать задачи, которые ожидают внешние события или изменения состояний, прежде чем продолжить выполнение DAG. Вот некоторые примеры сенсорных операторов в Airflow:
+
+1. ExternalTaskSensor: Этот сенсор ожидает завершения определенной задачи (внешней задачи) в другом DAG. Вот пример использования ExternalTaskSensor:
+
+from airflow import DAG
+from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.sensors import ExternalTaskSensor
+from datetime import datetime
+
+with DAG('my_dag', schedule_interval='@daily', start_date=datetime(2023, 1, 1)) as dag:
+    task1 = DummyOperator(task_id='task1')
+
+    task2 = ExternalTaskSensor(task_id='wait_for_task1', external_dag_id='other_dag', external_task_id='task1')
+
+    task1 >> task2
+В этом примере у нас есть две задачи: task1 и wait_for_task1. Задача wait_for_task1 является сенсором и ожидает завершения задачи task1 в другом даге с идентификатором 'other_dag'. Когда task1 в другом даге завершится, wait_for_task1 продолжит выполнение.
+
+2. FileSensor: Этот сенсор ожидает появление определенного файла на файловой системе. Вот пример использования FileSensor:
+
+from airflow import DAG
+from airflow.operators.sensors import FileSensor
+
+from datetime import datetime
+
+with DAG('my_dag', schedule_interval='@daily', start_date=datetime(2023, 1, 1)) as dag:
+  wait_for_file = FileSensor(
+      task_id='wait_for_file',
+      filepath='/path/to/my/file.txt'
+  )
+В этом примере у нас есть задача wait_for_file, которая ожидает появление файла /path/to/my/file.txt на файловой системе. Когда файл будет обнаружен, задача wait_for_file продолжит выполнение.
+
+3. HttpSensor: Этот сенсор выполняет HTTP-запрос и ожидает успешный ответ от сервера. Вот пример использования HttpSensor:
+
+from airflow import DAG
+from airflow.operators.sensors import HttpSensor
+
+from datetime import datetime
+
+with DAG('my_dag', schedule_interval='@daily', start_date=datetime(2023, 1, 1)) as dag:
+    wait_for_api = HttpSensor(
+        task_id='wait_for_api',
+        http_conn_id='my_http_conn',
+        endpoint='/api/health'
+    )
+В этом примере у нас есть задача wait_for_api, которая выполняет HTTP-запрос на эндпоинт /api/health с использованием соединения с идентификатором 'my_http_conn'. Сенсор ожидает успешный ответ от сервера (код ответа 2xx). Когда успешный ответ будет получен, задача wait_for_api продолжит выполнение.
+
+
+
+
+Jinja templating
+
+Jinja templating широко используется в Apache Airflow для создания динамических задач, определения параметров, форматирования строк и других операций в рамках дагов и операторов. В Airflow Jinja templating позволяет вам вставлять переменные и выражения в определенные атрибуты и параметры задач во время выполнения.
+
+Вот некоторые примеры использования Jinja templating в Apache Airflow:
+
+1. Вставка переменных в параметры задач: Вы можете использовать Jinja templating, чтобы вставить значения переменных или XCom данных в параметры задач:
+
+
+
+В этом примере мы определяем переменную my_variable со значением 'Hello, Airflow!'. Затем мы используем Jinja templating, обернув переменную в двойные фигурные скобки {{ }}, чтобы вставить ее значение в параметр bash_command задачи.
+
+2. Использование функций и выражений: Jinja templating также позволяет использовать функции и выражения внутри шаблонов. Например, вы можете использовать функцию ds_add() для добавления дат в параметры задач:
+
+
+
+В этом примере мы используем {{ ds }}, чтобы вставить текущую дату в параметр bash_command задачи с помощью функции ds_add().
+
+3. Использование контекста выполнения: Airflow предоставляет контекст выполнения задачи, который можно использовать в Jinja templating для получения доступа к различным свойствам и данным. Например, вы можете использовать контекст для получения значения XCom данных:
+
+
+
+
