@@ -1,7 +1,392 @@
-Пандас
+### Pandas
+
+#### 1. Как выполнить итерации по строкам в Pandas DataFrame?
+
+Итерация (также известная как цикл) - посещение каждой строки в DataFrame по отдельности с выполнением определенной операции.
+
+```
+df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
+df.head()
+```
+
+| id | col1 | col2 |
+|----|------|------|
+| 0  | 1    | A    |
+| 1  | 2    | B    |
+| 2  | 3    | C    |
 
 
-https://habr.com/ru/companies/ruvds/articles/494720/
+<details>
+<summary>Ответ</summary>
+  
+В Pandas можно выполнять итерацию тремя способами, используя **range(len(df))**, **iterrows()** и **itertuples()**.
 
-https://vk.com/@nuancesprog-top-10-voprosov-o-pandas-na-stackoverflow
+```
+print("Method 1:", end = " ")
+for index in range(len(df)):
+    print(df["col1"][index], end = " ")
+```
 
+Method 1: 1 2 3
+
+```
+print("\nMethod 2:", end = " ")
+for index, row in df.iterrows():
+    print(row["col1"], end = " ")
+```
+ 
+Method 2: 1 2 3
+
+```
+print("\nMethod 3:", end = " ")
+for row in df.itertuples(): 
+    print(row.col1, end = " ")
+```
+ 
+Method 3: 1 2 3 
+</details>
+
+#### 2. Как выбрать строки из DataFrame на основе значений столбцов?
+
+Вопрос касается проблемы фильтрации **DataFrame** на основе условия.
+
+```
+df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
+df.head()
+```
+
+| id | col1 | col2 |
+|----|------|------|
+| 0  | 1    | A    |
+| 1  | 2    | B    |
+| 2  | 3    | C    |
+
+Некоторые методы фильтрации DataFrame реализованы ниже:
+
+##### Метод 1: фильтрация по одному столбцу.
+
+```
+df[df.col1>2]
+```
+| id | col1 | col2 |
+|----|------|------|
+| 2  | 3    | C    |
+
+##### Метод 2: фильтрация по нескольким столбцам.
+
+```
+df[df.col1>1][df.col2 == "B"]
+```
+| id | col1 | col2 |
+|----|------|------|
+| 1  | 2    | B    |
+
+##### Метод 3: фильтрация из списка.
+
+```
+df[df.col2.isin(["A", "B"])]
+```
+| id | col1 | col2 |
+|----|------|------|
+| 0  | 1    | A    |
+| 1  | 2    | B    |
+
+##### Метод 4: использование df.query().
+
+```
+df.query('col1 > 2')
+```
+| id | col1 | col2 |
+|----|------|------|
+| 2  | 3    | C    |
+
+Метод **isin()** (Метод 3) принимает список значений фильтрации. Метод **query()** (Метод 4) оценивает строковое выражение для фильтрации строк из **DataFrame**.
+
+#### 3. Как переименовать столбцы в Pandas?
+Ссылка на вопрос.
+В данном случае задача состоит в том, чтобы изменить имена заголовков столбцов. Рассмотрим тот же DataFrame, что и выше.
+
+df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
+print(df)
+
+
+   col1 col2
+0     1    A
+1     2    B
+2     3    C
+Можно изменить имя col1 на col3с помощью метода rename()следующим образом:
+
+print(df.rename(columns = {"col1":"col3"}))
+
+
+   col3 col2
+0     1    A
+1     2    B
+2     3    C
+В этом случае исходный DataFrame остается неизменным. Если не нужно создавать новый DataFrame, используйте inplace=True, как показано ниже:
+
+df.rename(columns = {"col1":"col3"}, inplace = True)
+print(df)
+
+
+   col3 col2
+0     1    A
+1     2    B
+2     3    C
+При использовании метода rename() нужно создать мэппинг от old-column-name к new-column-name в виде словаря. Если имя столбца должно быть оставлено без изменений, его не нужно указывать в словаре.
+
+#### 4. Как удалить столбец из Pandas DataFrame?
+Ссылка на вопрос.
+Чтобы удалить один или несколько столбцов из DataFrame, можно использовать метод drop() и передать в виде списка столбцы, которые нужно удалить. Это показано в Method 1 и Method 2 ниже. В качестве альтернативы, как показано в Method 3, можно выбрать подмножество столбцов, которые нужно сохранить в конечном DataFrame.
+
+df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
+print(df)
+
+
+   col1 col2
+0     1    A
+1     2    B
+2     3    C
+## Method 1: Create a new DataFrame
+print(df.drop(columns = ["col1"]), end = "\n\n")
+
+## Method 2: Drop columns from the original DataFrame
+df.drop(columns = ["col1"], inplace = True)
+print(df, end = "\n\n")
+
+## Method 3: Select the required columns
+df = df[["col2"]]
+print(df)
+
+
+  col2
+0    A
+1    B
+2    C
+
+  col2
+0    A
+1    B
+2    C
+
+  col2
+0    A
+1    B
+2    C
+Метод 1: создайте новый DataFrame.
+Метод 2: удалите столбцы из исходного DataFrame.
+Метод 3: выберите необходимые столбцы.
+Синтаксис метода drop() аналогичен синтаксису метода rename(), с той лишь разницей, что аргумент columns принимает список столбцов, которые нужно удалить.
+
+#### 5. Как получить количество строк в Pandas DataFrame?
+Ссылка на вопрос.
+Этот вопрос ориентирован на знание формы Pandas DataFrame. Чтобы ответить на него, рассмотрим следующий DataFrame с тремя строками и двумя столбцами:
+
+df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
+print(df)
+
+
+   col1 col2
+0     1    A
+1     2    B
+2     3    C
+Чтобы найти форму, используйте атрибут shape для DataFrame следующим образом:
+
+print("Shape of the DataFrame:", df.shape)
+
+print("Number of rows:", df.shape[0])
+
+print("Number of columns:", df.shape[1])
+
+
+Shape of the DataFrame: (3, 2)
+Number of rows: 3
+Number of columns: 2
+Атрибут shape возвращает кортеж python. Первый элемент соответствует количеству строк, а второй обозначает количество столбцов.
+
+#### 6. Как выбрать несколько столбцов в Pandas DataFrame?
+Ссылка на вопрос.
+Суть данной задачи заключается в том, чтобы выбрать более одного столбца из DataFrame для дальнейшей обработки. Например, если исходный DataFrame состоит из трех столбцов, а именно col1, col2 и col3, как выбрать только col1 и col3?
+
+df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], columns = ["col1", "col2", "col3"])
+print(df)
+
+
+   col1 col2  col3
+0     1    A   1.1
+1     2    B   1.4
+2     3    C   1.9
+Это можно сделать двумя способами:
+
+## Method 1: select the required columns
+
+df_filtered = df[["col1", "col3"]]
+print(df_filtered)
+
+## Method 2: Using column indexes in iloc[]
+df_filtered = df.iloc[:, [0,2]]
+print(df_filtered)
+
+
+   col1  col3
+0     1   1.1
+1     2   1.4
+2     3   1.9
+   col1  col3
+0     1   1.1
+1     2   1.4
+2     3   1.9
+Метод 1: выберите требуемые столбцы.
+Метод 2: используйте индексы столбцов в iloc[].
+Список [0,2] в iloc интерпретируется как столбцы, расположенные под 0-м (col1) и 2-м (col3) индексами.
+
+#### 7. Как изменить порядок столбцов DataFrame?
+Ссылка на вопрос.
+Изменение порядка столбцов в DataFrame означает перестановку столбцов без изменения их количества (или формы DataFrame).
+
+Рассмотрим приведенный ниже DataFrame. Задача состоит в том, чтобы расположить столбцы в порядке col1-col2-col3.
+
+df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], 
+                  columns = ["col2", "col3", "col1"])
+print(df)
+
+
+   col2 col3  col1
+0     1    A   1.1
+1     2    B   1.4
+2     3    C   1.9
+Это можно сделать двумя способами:
+
+## Method 1: select all the columns in order
+
+df_new = df[["col1", "col2", "col3"]]
+print(df_new)
+
+## Method 2: Using all column indexes in iloc[]
+df_new = df.iloc[:, [2,0,1]]
+print(df_new)
+
+
+   col1  col2 col3
+0   1.1     1    A
+1   1.4     2    B
+2   1.9     3    C
+   col1  col2 col3
+0   1.1     1    A
+1   1.4     2    B
+2   1.9     3    C
+Метод 1: выберите все столбцы по порядку.
+Метод 2: используйте все индексы столбцов в iloc[].
+Список [2,0,1] в iloc интерпретируется как столбцы, расположенные под 2-м (col1), 0-м (col2) и 1-м (col3) индексами.
+
+#### 8. Как изменить тип столбца в Pandas?
+Ссылка на вопрос.
+Цель этого вопроса — узнать, как изменить тип данных столбца. Рассмотрим приведенный ниже DataFrame, в котором col1 содержит целочисленные значения в виде строк.
+
+df = pd.DataFrame([["1", "A"], ["2", "B"], [3, "C"]], 
+                  columns = ["col1", "col2"])
+print(df)
+
+print("Data Type of col1:", df.col1.dtype)
+
+
+  col1 col2
+0    1    A
+1    2    B
+2    3    C
+Data Type of col1: object
+Текущий тип данных col1 — это object (то же самое, что и string). Задача состоит в том, чтобы изменить тип данных col1 со string на integer. Изменить тип данных можно следующим образом:
+
+df["new_col1"] = df["col1"].astype(int)
+
+print(df)
+
+print("Data Type of new_col1:", df.new_col1.dtype)
+
+
+  col1 col2  new_col1
+0    1    A         1
+1    2    B         2
+2    3    C         3
+Data Type of new_col1: int64
+Чтобы не создавать столбец, можно хранить новые значения в том же столбце:
+
+df["col1"] = df["col1"].astype(int)
+
+print(df)
+
+print("Data Type of col1:", df.col1.dtype)
+
+
+   col1 col2  new_col1
+0     1    A         1
+1     2    B         2
+2     3    C         3
+Data Type of col1: int64
+При использовании метода astype() необходимо убедиться в том, что преобразование исходного типа данных в целевой выполнимо. Например, нельзя преобразовать столбец string алфавитов в тип данных integer (целочисленный) или float (плавающий).
+
+#### 9. Как получить список из заголовков столбцов Pandas DataFrame?
+Ссылка на вопрос.
+Задача состоит в том, чтобы получить названия всех столбцов в DataFrame в виде списка. Рассмотрим приведенный ниже DataFrame:
+
+df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], 
+                  columns = ["col1", "col2", "col3"])
+print(df)
+
+
+   col1 col2  col3
+0     1    A   1.1
+1     2    B   1.4
+2     3    C   1.9
+Чтобы получить список столбцов, используйте атрибут columns, как показано ниже:
+
+print("All column names:", df.columns)
+
+print("Type of df.columns: ", type(df.columns))
+
+
+All column names: Index(['col1', 'col2', 'col3'], dtype='object')
+Type of df.columns:  <class 'pandas.core.indexes.base.Index'>
+Вышеуказанное возвращает столбец как объект Index. Чтобы получить его в виде списка, приведите полученные результаты к списку:
+
+list(df.columns)
+
+
+['col1', 'col2', 'col3']
+
+
+#### 10. Как создать Pandas Dataframe путем добавления одной строки за раз?
+
+Задача в том, чтобы добавлять одну строку за раз к изначально пустому DataFrame. Есть пустой **DataFrame** и список списков **data**, где каждый отдельный подсписок будет добавлен в **DataFrame** в виде строки.
+
+```
+df = pd.DataFrame(columns = ["col1", "col2", "col3"])
+df.head()
+
+data = [[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]]
+
+Empty DataFrame
+Columns: [col1, col2, col3]
+Index: []
+```
+
+<details>
+<summary>Ответ</summary>
+Чтобы добавлять по одной строке за раз, нужно выполнить итерацию по списку data и добавить новую строку следующим образом:
+
+```
+for i in data:
+    df.loc[df.shape[0]] = i
+
+df.head()
+```
+
+| id | col1 | col2 | col3 |
+|----|------|------|------|
+| 0 | 1 | A | 1.1 |
+| 1 | 2 | B | 1.4 |
+| 2 | 3 | C | 1.9 |
+
+Первый элемент кортежа, возвращаемого атрибутом **shape**, обозначает количество строк в **DataFrame**. Поэтому каждая новая строка, добавленная в **DataFrame**, обеспечивает создание нового индекса для следующей строки.
+
+</details>
