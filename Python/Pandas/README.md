@@ -159,7 +159,7 @@ df.head()
 
 ```
 df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
-df
+df.head()
 ```
 
 | id | col1 | col2 |
@@ -174,13 +174,13 @@ df.drop(columns = ["col1"])
 
 ```
 df.drop(columns = ["col1"], inplace = True)
-df
+df.head()
 ```
 В качестве альтернативы, можно выбрать подмножество столбцов, которые нужно сохранить в конечном **DataFrame**.
 
 ```
 df = df[["col2"]]
-df
+df.head()
 ```
 
 | id | col2 |
@@ -201,7 +201,7 @@ df
 
 ```
 df = pd.DataFrame([[1, "A"], [2, "B"], [3, "C"]], columns = ["col1", "col2"])
-df
+df.head()
 ```
 
 | id | col1 | col2 |
@@ -237,7 +237,7 @@ Number of columns: 2
 
 ```
 df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], columns = ["col1", "col2", "col3"])
-df
+df.head()
 ```
 
 | id| col1 | col2 | col3 |
@@ -255,7 +255,7 @@ df
 
 ```
 df_filtered = df[["col1", "col3"]]
-df_filtered
+df_filtered.head()
 ```
 
 Метод 2: использовать индексы столбцов в iloc[]. Список *[0,2]* в ***iloc*** интерпретируется как столбцы, расположенные под 0-м (*col1*) и 2-м (*col3*) индексами.
@@ -283,7 +283,7 @@ df_filtered
 ```
 df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], 
                   columns = ["col2", "col3", "col1"])
-df
+df.head()
 ```
 
 | id| col1 | col2 | col3 |
@@ -301,14 +301,14 @@ df
 
 ```
 df_new = df[["col1", "col2", "col3"]]
-df_new
+df_new.head()
 ```
 
 Метод 2: использовать все индексы столбцов в *iloc[]*. Список *[2,0,1]* в ***iloc*** интерпретируется как столбцы, расположенные под 2-м (*col1*), 0-м (*col2*) и 1-м (*col3*) индексами.
 
 ```
 df_new = df.iloc[:, [2,0,1]]
-df_new
+df_new.head()
 ```
 
 | id | col1 | col2 | col3 |
@@ -327,7 +327,7 @@ df_new
 ```
 df = pd.DataFrame([["1", "A"], ["2", "B"], [3, "C"]], 
                   columns = ["col1", "col2"])
-df
+df.head()
 ```
 
 | id | col1 | col2 |
@@ -376,34 +376,40 @@ Data Type of col1: int64
 
 Задача - чтобы получить названия всех столбцов в **DataFrame** в виде списка.
 
+```
 df = pd.DataFrame([[1, "A", 1.1], [2, "B", 1.4], [3, "C", 1.9]], 
                   columns = ["col1", "col2", "col3"])
-print(df)
+df.head()
+```
 
-
-   col1 col2  col3
-0     1    A   1.1
-1     2    B   1.4
-2     3    C   1.9
+| id| col1 | col2 | col3 |
+|---|------|------|------|
+| 0 | 1 | A | 1.1 |
+| 1 | 2 | B | 1.4 |
+| 2 | 3 | C | 1.9 |
 
 <details>
 <summary>Ответ</summary>
   
-Чтобы получить список столбцов, используйте атрибут columns, как показано ниже:
+Чтобы получить список столбцов, используется атрибут *columns*:
 
+```
 print("All column names:", df.columns)
+
+All column names: Index(['col1', 'col2', 'col3'], dtype='object')
 
 print("Type of df.columns: ", type(df.columns))
 
-
-All column names: Index(['col1', 'col2', 'col3'], dtype='object')
 Type of df.columns:  <class 'pandas.core.indexes.base.Index'>
-Вышеуказанное возвращает столбец как объект Index. Чтобы получить его в виде списка, приведите полученные результаты к списку:
+```
 
+Вышеуказанное возвращает столбец как объект *Index*. Чтобы получить его в виде списка, приведите полученные результаты к списку:
+
+```
 list(df.columns)
 
-
 ['col1', 'col2', 'col3']
+```
 </details>
 
 #### 10. Как создать Pandas Dataframe путем добавления одной строки за раз?
@@ -423,7 +429,7 @@ Index: []
 
 <details>
 <summary>Ответ</summary>
-Чтобы добавлять по одной строке за раз, нужно выполнить итерацию по списку data и добавить новую строку следующим образом:
+Чтобы добавлять по одной строке за раз, нужно выполнить итерацию по списку *data* и добавить новую строку следующим образом:
 
 ```
 for i in data:
